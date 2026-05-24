@@ -1,0 +1,151 @@
+# 🔒 Home Network Security Audit Report
+
+**Date:** 2024-01-15  
+**Auditor:** [Your Name]  
+**Scope:** `192.168.1.0/24` (Home Network)  
+**Total Hosts Scanned:** 4  
+**Total Open Ports Found:** 14  
+
+---
+
+## Executive Summary
+
+A comprehensive security audit was conducted on a typical home network. The scan identified **4 active hosts** with a combined **14 open ports**. Critical vulnerabilities were found on the Windows workstation and NAS device, including exposed SMB, RDP, VNC, and FTP services.
+
+### Risk Overview
+
+| Risk Level | Count | Hosts Affected |
+|------------|-------|----------------|
+| 🔴 CRITICAL | 7 | DESKTOP-WORK, nas.local |
+| 🟠 HIGH | 0 | — |
+| 🟡 MEDIUM | 4 | router.local, SmartTV |
+| 🟢 LOW | 3 | All HTTPS/SSH |
+| ⚪ INFO | 0 | — |
+
+---
+
+## Detailed Findings
+
+---
+
+### 🖥 Host 1: `192.168.1.1` (router.local)
+**OS:** Linux 4.15 (embedded)  
+**Risk Level:** Medium
+
+| Port | Service | Version | Risk | Finding |
+|------|---------|---------|------|---------|
+| 22 | SSH | OpenSSH 7.4 | 🟡 MEDIUM | Secure shell open — disable root login |
+| 80 | HTTP | lighttpd 1.4.53 | 🟡 MEDIUM | Admin panel over HTTP — use HTTPS only |
+| 443 | HTTPS | lighttpd 1.4.53 | 🟢 LOW | Encrypted admin panel — check certificate |
+
+**Recommendations:**
+- Disable SSH or restrict to management VLAN only
+- Redirect HTTP (80) → HTTPS (443), disable HTTP
+- Change default router admin credentials
+- Enable 2FA on router admin panel if supported
+
+---
+
+### 🖥 Host 2: `192.168.1.105` (DESKTOP-WORK)
+**OS:** Windows 10 20H2  
+**Risk Level:** 🔴 CRITICAL
+
+| Port | Service | Risk | Finding |
+|------|---------|------|---------|
+| 135 | MS-RPC | 🔴 CRITICAL | Exposed RPC endpoint — vector for lateral movement |
+| 139 | NetBIOS | 🔴 CRITICAL | Legacy protocol — disable immediately |
+| 445 | SMB | 🔴 CRITICAL | EternalBlue/WannaCry target — block externally |
+| 3389 | RDP | 🔴 CRITICAL | Remote Desktop exposed — brute-force target |
+| 5900 | VNC | 🔴 CRITICAL | UltraVNC with weak auth — disable or restrict |
+
+**Recommendations:**
+- **Immediately** block ports 135, 139, 445 at the firewall
+- Disable RDP (3389) — use VPN + RDP instead of direct exposure
+- Disable VNC or enable strong authentication + encryption
+- Apply Windows Update — patch EternalBlue (MS17-010)
+- Enable Windows Defender Firewall
+
+---
+
+### 🖥 Host 3: `192.168.1.200` (nas.local)
+**OS:** Linux 3.10 (embedded)  
+**Risk Level:** 🔴 CRITICAL
+
+| Port | Service | Risk | Finding |
+|------|---------|------|---------|
+| 21 | FTP | 🔴 CRITICAL | Plaintext FTP — credentials interceptable |
+| 22 | SSH | 🟢 LOW | SSH access — ensure key-based auth only |
+| 80 | HTTP | 🟡 MEDIUM | NAS admin over HTTP — migrate to HTTPS |
+| 443 | HTTPS | 🟢 LOW | Encrypted panel — verify certificate |
+| 139 | NetBIOS | 🔴 CRITICAL | Legacy SMB — disable |
+| 445 | SMB | 🔴 CRITICAL | Exposed SMB — restrict to trusted clients |
+
+**Recommendations:**
+- **Disable FTP** — replace with SFTP (SSH file transfer)
+- Disable NetBIOS (139) and restrict SMB (445) to local trusted IPs
+- Update NAS firmware to latest version
+- Enable SMB signing to prevent relay attacks
+
+---
+
+### 🖥 Host 4: `192.168.1.150` (SmartTV-Samsung)
+**OS:** Linux 3.10  
+**Risk Level:** Medium
+
+| Port | Service | Risk | Finding |
+|------|---------|------|---------|
+| 8080 | HTTP (Tizen) | 🟡 MEDIUM | Web interface open — potential unauthorized control |
+| 9197 | Unknown | 🟡 MEDIUM | Unknown service — investigate |
+
+**Recommendations:**
+- Isolate Smart TV on separate IoT VLAN
+- Block incoming connections to TV from internet
+- Keep TV firmware updated
+- Disable unused features (Smart Hub, if not used)
+
+---
+
+## Remediation Plan
+
+### Immediate Actions (0–24 hours)
+
+- [ ] Apply `firewall_hardening.sh` on Linux hosts
+- [ ] Block ports 135, 139, 445, 3389, 5900 at router level
+- [ ] Disable FTP on NAS, enable SFTP
+- [ ] Change all default credentials on router and NAS
+
+### Short-Term (1–7 days)
+
+- [ ] Update Windows 10 — apply all security patches
+- [ ] Update NAS firmware
+- [ ] Replace HTTP admin panels with HTTPS
+- [ ] Install and configure fail2ban
+
+### Long-Term (1–4 weeks)
+
+- [ ] Set up IoT VLAN to isolate Smart TV and other IoT devices
+- [ ] Enable WPA3 on Wi-Fi (if router supports it)
+- [ ] Implement network monitoring (e.g., Zeek, Suricata)
+- [ ] Schedule quarterly security audits
+
+---
+
+## Tools Used
+
+| Tool | Purpose |
+|------|---------|
+| Nmap 7.94 | Network scanning, port detection, OS fingerprinting |
+| Python 3.10 | Automated XML parsing and risk analysis |
+| UFW | Linux firewall management |
+| fail2ban | Brute-force prevention |
+
+---
+
+## Conclusion
+
+The home network audit revealed **significant security risks**, primarily on the Windows workstation exposing SMB/RDP/VNC services. Immediate remediation is recommended to prevent ransomware infection and unauthorized remote access. Applying the provided firewall hardening script will mitigate the majority of identified risks.
+
+---
+
+*Report generated by Home Network Security Audit Toolkit*  
+*For educational purposes only — only audit networks you own or have permission to test*

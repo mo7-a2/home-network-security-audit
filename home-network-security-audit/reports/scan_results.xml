@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Sample Nmap XML Output — Home Network Security Audit
+  Generated for demonstration purposes
+  Replace this with actual output from: sudo nmap -sS -sV -O -oX scan_results.xml 192.168.1.0/24
+-->
+<nmaprun scanner="nmap" start="1700000000" version="7.94" xmloutputversion="1.05">
+
+  <!-- Host 1: Router/Gateway -->
+  <host starttime="1700000001" endtime="1700000060">
+    <status state="up" reason="echo-reply"/>
+    <address addr="192.168.1.1" addrtype="ipv4"/>
+    <hostnames>
+      <hostname name="router.local" type="PTR"/>
+    </hostnames>
+    <os>
+      <osmatch name="Linux 4.15 (embedded)" accuracy="92"/>
+    </os>
+    <ports>
+      <port protocol="tcp" portid="22">
+        <state state="open" reason="syn-ack"/>
+        <service name="ssh" product="OpenSSH" version="7.4"/>
+      </port>
+      <port protocol="tcp" portid="80">
+        <state state="open" reason="syn-ack"/>
+        <service name="http" product="lighttpd" version="1.4.53"/>
+      </port>
+      <port protocol="tcp" portid="443">
+        <state state="open" reason="syn-ack"/>
+        <service name="https" product="lighttpd" version="1.4.53"/>
+      </port>
+    </ports>
+  </host>
+
+  <!-- Host 2: Windows PC — Multiple critical issues -->
+  <host starttime="1700000061" endtime="1700000120">
+    <status state="up" reason="echo-reply"/>
+    <address addr="192.168.1.105" addrtype="ipv4"/>
+    <hostnames>
+      <hostname name="DESKTOP-WORK" type="PTR"/>
+    </hostnames>
+    <os>
+      <osmatch name="Windows 10 20H2" accuracy="96"/>
+    </os>
+    <ports>
+      <port protocol="tcp" portid="135">
+        <state state="open" reason="syn-ack"/>
+        <service name="msrpc" product="Microsoft Windows RPC"/>
+      </port>
+      <port protocol="tcp" portid="139">
+        <state state="open" reason="syn-ack"/>
+        <service name="netbios-ssn" product="Microsoft Windows netbios-ssn"/>
+      </port>
+      <port protocol="tcp" portid="445">
+        <state state="open" reason="syn-ack"/>
+        <service name="microsoft-ds" product="Windows 10 microsoft-ds"/>
+      </port>
+      <port protocol="tcp" portid="3389">
+        <state state="open" reason="syn-ack"/>
+        <service name="ms-wbt-server" product="Microsoft Terminal Services"/>
+      </port>
+      <port protocol="tcp" portid="5900">
+        <state state="open" reason="syn-ack"/>
+        <service name="vnc" product="UltraVNC" version="1.2.4.0"/>
+      </port>
+    </ports>
+  </host>
+
+  <!-- Host 3: NAS Device -->
+  <host starttime="1700000121" endtime="1700000180">
+    <status state="up" reason="echo-reply"/>
+    <address addr="192.168.1.200" addrtype="ipv4"/>
+    <hostnames>
+      <hostname name="nas.local" type="PTR"/>
+    </hostnames>
+    <os>
+      <osmatch name="Linux 3.10 (embedded)" accuracy="88"/>
+    </os>
+    <ports>
+      <port protocol="tcp" portid="21">
+        <state state="open" reason="syn-ack"/>
+        <service name="ftp" product="vsftpd" version="3.0.3"/>
+      </port>
+      <port protocol="tcp" portid="22">
+        <state state="open" reason="syn-ack"/>
+        <service name="ssh" product="OpenSSH" version="7.9"/>
+      </port>
+      <port protocol="tcp" portid="80">
+        <state state="open" reason="syn-ack"/>
+        <service name="http" product="Apache httpd" version="2.4.38"/>
+      </port>
+      <port protocol="tcp" portid="443">
+        <state state="open" reason="syn-ack"/>
+        <service name="https" product="Apache httpd" version="2.4.38"/>
+      </port>
+      <port protocol="tcp" portid="139">
+        <state state="open" reason="syn-ack"/>
+        <service name="netbios-ssn"/>
+      </port>
+      <port protocol="tcp" portid="445">
+        <state state="open" reason="syn-ack"/>
+        <service name="microsoft-ds"/>
+      </port>
+    </ports>
+  </host>
+
+  <!-- Host 4: Smart TV -->
+  <host starttime="1700000181" endtime="1700000210">
+    <status state="up" reason="echo-reply"/>
+    <address addr="192.168.1.150" addrtype="ipv4"/>
+    <hostnames>
+      <hostname name="SmartTV-Samsung" type="PTR"/>
+    </hostnames>
+    <os>
+      <osmatch name="Linux 3.10" accuracy="75"/>
+    </os>
+    <ports>
+      <port protocol="tcp" portid="8080">
+        <state state="open" reason="syn-ack"/>
+        <service name="http" product="Tizen Web Server"/>
+      </port>
+      <port protocol="tcp" portid="9197">
+        <state state="open" reason="syn-ack"/>
+        <service name="unknown"/>
+      </port>
+    </ports>
+  </host>
+
+</nmaprun>

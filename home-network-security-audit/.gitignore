@@ -1,0 +1,29 @@
+# Home Network Security Audit — .gitignore
+
+# Sensitive scan outputs (don't commit real network data!)
+reports/scan_results_*.xml
+reports/scan_results_*.txt
+reports/vuln_scan_*.xml
+reports/risky_ports_*.txt
+
+# Keep sample files
+!reports/scan_results.xml
+!reports/security_report.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Logs
+*.log
+/logs/

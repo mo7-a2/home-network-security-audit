@@ -1,0 +1,36 @@
+# UFW Firewall Rules Reference
+# Home Network Security Audit
+# Apply with: sudo ufw [rule]
+
+# ── Default Policies ──────────────────────────────────
+ufw default deny incoming
+ufw default allow outgoing
+ufw default deny forward
+
+# ── Allow SSH (from local network only) ───────────────
+ufw allow from 192.168.1.0/24 to any port 22 proto tcp
+ufw limit ssh
+
+# ── Allow HTTPS ───────────────────────────────────────
+ufw allow 443/tcp
+
+# ── Block Critical Ports ──────────────────────────────
+ufw deny 21/tcp        # FTP
+ufw deny 23/tcp        # Telnet
+ufw deny 135/tcp       # MS-RPC
+ufw deny 137/udp       # NetBIOS-NS
+ufw deny 138/udp       # NetBIOS-DGM
+ufw deny 139/tcp       # NetBIOS-SSN
+ufw deny 445/tcp       # SMB
+ufw deny 1433/tcp      # MSSQL
+ufw deny 3306/tcp      # MySQL
+ufw deny 3389/tcp      # RDP
+ufw deny 5900/tcp      # VNC
+ufw deny 6667/tcp      # IRC (botnet C2)
+
+# ── Enable Logging ────────────────────────────────────
+ufw logging on
+ufw logging medium
+
+# ── Enable ────────────────────────────────────────────
+ufw enable
